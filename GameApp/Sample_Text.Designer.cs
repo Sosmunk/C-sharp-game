@@ -1,7 +1,7 @@
 ﻿
-namespace WindowsFormsApp2
+namespace Sample_Text
 {
-    partial class Form1
+    partial class Sample_Text
     {
         /// <summary>
         /// Required designer variable.
@@ -30,27 +30,33 @@ namespace WindowsFormsApp2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.SuspendLayout();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             // 
-            // Form1
+            // Sample_Text
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(1000, 1000);
+            this.BackgroundImage = global::Sample_Text.Properties.Resources.Background;
+            this.ClientSize = new System.Drawing.Size(1440, 1024);
             this.DoubleBuffered = true;
-            this.Name = "Form1";
-            this.Text = "Why";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Entity_Paint);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Player_Paint);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.UI_Paint);
+            this.Name = "Sample_Text";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Hmm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }
 
