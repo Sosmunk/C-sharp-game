@@ -20,6 +20,8 @@ namespace Sample_Text
         
         public Sample_Text()
         {
+            //Action<HashSet<Entity>> action = x => x.Add(new Bullet(100,100,10));
+            //action(entities);
             InitializeComponent();
             updateTimer.Interval = 10;
             updateTimer.Tick += new EventHandler(Update);
@@ -72,8 +74,8 @@ namespace Sample_Text
         // Не придумал, как реализовать механику изменения вида стрельбы (например triple-shot при подбирании power-up)
         // Может быть через делегаты?
         // Перенести в логику PlayerEntity
-        // shootingleft,shootingRight; player.shoot
-
+        // shootingleft,shootingRight; player.shoot(Hashset<Entity> entities)
+        
         public void Shoot(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -141,11 +143,13 @@ namespace Sample_Text
             {
                 if (entity.IsAlive)
                 {
+                    
                     var entityModel = new Rectangle
-                        ((int)entity.Position.X + player.Hitbox / 2,
-                        (int)entity.Position.Y + player.Hitbox / 2,
+                        ((int)entity.Position.X - player.Hitbox / 2,
+                        (int)entity.Position.Y - player.Hitbox / 2,
                         entity.Hitbox,
                         entity.Hitbox);
+                    g.DrawImage(, entityModel);
                     g.DrawRectangle
                         (new Pen(Color.Yellow, 1), entityModel);
                     g.FillRectangle(new SolidBrush(Color.Yellow), entityModel);
