@@ -9,11 +9,12 @@ namespace Sample_Text
 {
     public class Bullet : Entity
     {
-
-        public Bullet(int posX, int posY, int speed) : base(posX, posY, speed)
+        public int Damage = 50;
+        public Bullet(int posX, int posY, int speed, int damage) : base(posX, posY, speed)
         {
             Hitbox = 15;
             Health = 100;
+            Damage = damage;
             
         }
         public override void Move()

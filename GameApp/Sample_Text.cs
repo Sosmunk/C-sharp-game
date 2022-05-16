@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sample_Text.EntityData;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,23 +13,41 @@ namespace Sample_Text
 {
     public partial class Sample_Text : Form
     {
-        public Entity player;
+        public enum Direction
+        {
+            Up,
+            Down,
+            Left,
+            Right,
+        }
+        public PlayerEntity player;
         // Сущности хранятся в hashset
         // Есть ли целесообразность в реализации такой сборки мусора?
         // foreach (entity in entities) if (!entity.IsAlive) entities.Remove(entity)
-        public HashSet<Entity> entities = new HashSet<Entity>();
-        
+        public HashSet<Bullet> Bullets;
+        public HashSet<Runner> Enemies;
+        public Random random;
         public Sample_Text()
         {
             //Action<HashSet<Entity>> action = x => x.Add(new Bullet(100,100,10));
             //action(entities);
+            random = new Random();
             InitializeComponent();
             updateTimer.Interval = 10;
             updateTimer.Tick += new EventHandler(Update);
             KeyDown += new KeyEventHandler(OnPress);
             KeyUp += new KeyEventHandler(OnRelease);
             KeyDown += new KeyEventHandler(Shoot);
+            KeyUp += new KeyEventHandler(ReleaseShooting);
+            Enemies = new HashSet<Runner>();
+            Bullets = new HashSet<Bullet>();
+            
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.UI_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Player_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Bullet_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Enemy_Paint);
             StartGame();
+            
         }
 
         public void OnPress(object sender, KeyEventArgs e)
@@ -69,95 +88,169 @@ namespace Sample_Text
             }
         }
 
-        // Очень много копипасты, нужно отрефакторить
-        // Пока что костыль
-        // Не придумал, как реализовать механику изменения вида стрельбы (например triple-shot при подбирании power-up)
-        // Может быть через делегаты?
-        // Перенести в логику PlayerEntity
-        // shootingleft,shootingRight; player.shoot(Hashset<Entity> entities)
-        
         public void Shoot(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    var u = new Bullet((int)player.Position.X, (int)player.Position.Y, 10);
-                    u.movingUp = true;
-                    entities.Add(u);
+                    player.shootingUp = true;
                     break;
                 case Keys.Down:
-                    var d = new Bullet((int)player.Position.X, (int)player.Position.Y, 10);
-                    d.movingDown = true;
-                    entities.Add(d);
+                    player.shootingDown = true;
                     break;
                 case Keys.Left:
-                    var l = new Bullet((int)player.Position.X, (int)player.Position.Y, 10);
-                    l.movingLeft = true;
-                    entities.Add(l);
+                    player.shootingLeft = true;
                     break;
                 case Keys.Right:
-                    var r = new Bullet((int)player.Position.X, (int)player.Position.Y, 10);
-                    r.movingRight = true;
-                    entities.Add(r);
+                    player.shootingRight = true;
                     break;
-
+            }
+        }
+        public void ReleaseShooting(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    player.shootingUp = false;
+                    break;
+                case Keys.Down:
+                    player.shootingDown = false;
+                    break;
+                case Keys.Left:
+                    player.shootingLeft = false;
+                    break;
+                case Keys.Right:
+                    player.shootingRight = false;
+                    break;
             }
         }
 
         public void StartGame()
         {
-            player = new PlayerEntity(700,520,4);
+            player = new PlayerEntity(700, 520, 4);
+            
             updateTimer.Start();
         }
 
         public void Update(object sender, EventArgs e)
         {
             player.Move();
-            foreach (var entity in entities)
+            var rngX = random.Next(0, 1440);
+            var rngY = random.Next(0, 1024);
+            var rngTick = random.Next(0, 100);
+            if (rngTick == 1) Enemies.Add(new Runner(rngX, rngY, 2));
+
+
+            BulletWithEnemyCollisions(Bullets,Enemies);
+            player.Shoot(Bullets);
+            foreach (var enemy in Enemies)
+            {
+                if (enemy.IsAlive)
+                {
+                    enemy.FindPlayer(player);
+                    CheckEnemyCollisions(enemy, player);
+                    enemy.Move();
+                }
+                
+            }
+            foreach (var entity in Bullets)
             {
                 if (entity.IsAlive)
-                entity.Move();
+                    entity.Move();
             }
+            Enemies.RemoveWhere(x => !x.IsAlive);
+            Bullets.RemoveWhere(x => !x.IsAlive);
             Invalidate();
         }
 
         private void Player_Paint(object sender, PaintEventArgs e)
         {
-            var g = e.Graphics;
-            var playerModel = new Rectangle
-                ((int)player.Position.X,
-                (int)player.Position.Y,
-                player.Hitbox,
-                player.Hitbox);
+                var g = e.Graphics;
+                var playerModel = player.HitBoxRectangle();
+                g.DrawImage(Properties.Resources.mage, playerModel);
             
-            g.DrawRectangle(new Pen(Color.Turquoise, 1), playerModel);
-            g.FillRectangle(new SolidBrush(Color.Turquoise), playerModel);
         }
 
-        private void Entity_Paint(object sender, PaintEventArgs e)
+        private void Bullet_Paint(object sender, PaintEventArgs e)
         {
             // Реализовать через PictureBox (спрайты)
             // Каждое entity должно иметь свойственный ему pbox
             var g = e.Graphics;
-            foreach (var entity in entities)
+            foreach (var entity in Bullets)
             {
                 if (entity.IsAlive)
                 {
-                    
-                    var entityModel = new Rectangle
-                        ((int)entity.Position.X - player.Hitbox / 2,
-                        (int)entity.Position.Y - player.Hitbox / 2,
-                        entity.Hitbox,
-                        entity.Hitbox);
-                    g.DrawImage(, entityModel);
+                    var entityModel = entity.HitBoxRectangle();
                     g.DrawRectangle
                         (new Pen(Color.Yellow, 1), entityModel);
                     g.FillRectangle(new SolidBrush(Color.Yellow), entityModel);
                 }
-                
+
+            }
+        }
+        private void Enemy_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            foreach (var enemy in Enemies)
+            {
+                if (enemy.IsAlive)
+                {
+                    var enemyModel = enemy.HitBoxRectangle();
+                    //g.DrawImage(Properties.Resources.sheben, enemyModel);
+                    g.DrawRectangle(new Pen(Color.Red, 1), enemyModel);
+                    g.FillRectangle(new SolidBrush(Color.Red), enemyModel);
+                }
+            }
+        }
+        public static bool AreIntersected(Rectangle r1, Rectangle r2)
+        {
+            // Прямоугольники не пересекутся, если их противоположные вертикальные
+            // и горизонтальные стороны не будут проходить друг через друга
+            if ((r1.Top > r2.Bottom) || (r2.Top > r1.Bottom))
+            {
+                return false;
+            }
+            if ((r1.Right < r2.Left) || (r2.Right < r1.Left))
+            {
+                return false;
+            }
+            return true;
+        }
+        private void CheckEnemyCollisions(Runner runner, PlayerEntity player)
+        {
+            var playerRectangle = player.HitBoxRectangle();
+            var enemyRectangle = runner.HitBoxRectangle();
+            if (AreIntersected(playerRectangle, enemyRectangle))
+            {
+                player.TakeDamage(1);
             }
         }
 
+        private void BulletWithEnemyCollisions(HashSet<Bullet> bullets, HashSet<Runner> runners)
+        {
+            foreach (var b in bullets)
+            {
+                if (b.IsAlive)
+                {
+                    var bulletRectangle = b.HitBoxRectangle();
+                    foreach (var r in runners)
+                    {
+                        if (r.IsAlive)
+                        {
+                            var runnerRectangle = r.HitBoxRectangle();
+                            if (AreIntersected(bulletRectangle, runnerRectangle))
+                            {
+                                r.TakeDamage(b.Damage);
+                                b.IsAlive = false;
+                            }
+                        }
+                        
+                    }
+
+                }
+                
+            }
+        }
         private void UI_Paint(object sender, PaintEventArgs e)
         {
             // Todo

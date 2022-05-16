@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -24,6 +25,14 @@ namespace Sample_Text
             IsAlive = true;
         }
 
+        public virtual void TakeDamage(int value)
+        {
+            Health -= value;
+            if (Health <= 0)
+            {
+                IsAlive = false;
+            }
+        }
         public virtual void Move()
         {
             var direction = NormalizeMovement();
@@ -42,6 +51,10 @@ namespace Sample_Text
             if (vector.X == 0 && vector.Y == 0) return vector;
             vector.Normalize();
             return vector;
+        }
+        public Rectangle HitBoxRectangle()
+        {
+            return new Rectangle((int)Position.X - Hitbox / 2, (int)Position.Y - Hitbox / 2, Hitbox,Hitbox);
         }
         
     }

@@ -31,26 +31,23 @@ namespace Sample_Text
         {
             this.components = new System.ComponentModel.Container();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.SuspendLayout();
             // 
             // Sample_Text
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.BackgroundImage = global::Sample_Text.Properties.Resources.Background;
             this.ClientSize = new System.Drawing.Size(1440, 1024);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Entity_Paint);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Player_Paint);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.UI_Paint);
             this.Name = "Sample_Text";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hmm";
+            
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

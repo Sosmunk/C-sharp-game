@@ -51,6 +51,7 @@
     <Compile Include="EntityData\Bullet.cs" />
     <Compile Include="EntityData\PlayerEntity.cs" />
     <Compile Include="EntityData\Entity.cs" />
+    <Compile Include="EntityData\Runner.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BG.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sheben.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
