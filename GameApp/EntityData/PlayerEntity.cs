@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace Sample_Text
@@ -11,12 +12,60 @@ namespace Sample_Text
     {
         public bool shootingLeft, shootingRight, shootingUp, shootingDown;
         public int shootCooldown;
-        private int ShootingSpeed = 50;
+        private readonly int ShootingSpeed;
+        public int InvulnerabilityFrames { get; private set; }
+        public Vector PreviousPosition;
+        public int PrevPositionCounter;
         public PlayerEntity(int posX, int posY, int speed) : base(posX, posY, speed)
         {
             Hitbox = 70;
             Health = 228;
+            ShootingSpeed = 50;
             shootCooldown = ShootingSpeed;
+            InvulnerabilityFrames = 10;
+            PreviousPosition = new Vector(posX, posY);
+            PrevPositionCounter = 25;
+        }
+
+        public override void Move()
+        {
+            PrevPositionCounter--;
+            var direction = NormalizeMovement();
+            var newPos = Position + (direction * speed);
+            if (PrevPositionCounter == 0)
+            {
+                PreviousPosition = Position;
+                PrevPositionCounter = 25;
+            }
+            if (newPos.X < 0 || newPos.X > 1440)
+            {
+                Position += new Vector(Position.X - newPos.X, direction.Y * speed);
+                return;
+            }
+            if (newPos.Y < 0 || newPos.Y > 1024)
+            {
+                Position += new Vector(direction.X * speed, Position.Y - newPos.Y);
+                return;
+            }
+            if (newPos.X < 0 || newPos.Y < 0 || newPos.X > 1440 || newPos.Y > 1024)
+                return;
+            Position += direction * speed;
+            
+        }
+
+        public override void TakeDamage(int value)
+        {
+            Health -= value;
+            if (Health <= 0)
+            {
+                IsAlive = false;
+            }
+            InvulnerabilityFrames = 50;
+        }
+        public void UpdateInvulnerabilityFrames()
+        {
+            if (InvulnerabilityFrames > 0)
+                InvulnerabilityFrames--;
         }
         public void Shoot(HashSet<Bullet> bullets)
         {
