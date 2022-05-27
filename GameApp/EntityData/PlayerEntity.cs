@@ -31,7 +31,7 @@ namespace Sample_Text
         {
             PrevPositionCounter--;
             var direction = NormalizeMovement();
-            var newPos = Position + (direction * speed);
+            var newPos = Position + (direction * Speed);
             if (PrevPositionCounter == 0)
             {
                 PreviousPosition = Position;
@@ -39,17 +39,22 @@ namespace Sample_Text
             }
             if (newPos.X < 0 || newPos.X > 1440)
             {
-                Position += new Vector(Position.X - newPos.X, direction.Y * speed);
+                Position += new Vector(Position.X - newPos.X, direction.Y * Speed);
                 return;
             }
             if (newPos.Y < 0 || newPos.Y > 1024)
             {
-                Position += new Vector(direction.X * speed, Position.Y - newPos.Y);
+                Position += new Vector(direction.X * Speed, Position.Y - newPos.Y);
                 return;
             }
             if (newPos.X < 0 || newPos.Y < 0 || newPos.X > 1440 || newPos.Y > 1024)
                 return;
-            Position += direction * speed;
+            if (InvulnerabilityFrames > 0)
+            {
+                Position += direction * (Speed * 3 / 2);
+                return;
+            }
+            Position += direction * Speed;
             
         }
 

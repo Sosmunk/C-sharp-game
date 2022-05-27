@@ -24,7 +24,7 @@ namespace Sample_Text.ModelManagers
                 if (enemy.IsAlive)
                 {
                     enemy.SetMoveDirectionToPlayerLocation(player);
-                    CollisionManager.PlayerWithEnemyCollisions(enemy, player);
+                    CollisionManager.PlayerWithEnemyCollision(enemy, player);
                     enemy.Move(Enemies);
                 }
             }

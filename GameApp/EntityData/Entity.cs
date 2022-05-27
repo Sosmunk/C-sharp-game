@@ -17,17 +17,17 @@ namespace Sample_Text
             Right,
         }
         public Vector Position { get; set; }
-        public int Hitbox;
+        public int Hitbox { get; internal set; }
         public bool movingUp, movingDown, movingRight, movingLeft;
-        public int speed;
-        public bool IsAlive;
-        public int Health;
+        public int Speed { get; internal set; }
+        public bool IsAlive { get; internal set; }
+        public int Health { get; internal set; }
         public LookDirection lookDirection;
 
         public Entity(int posX, int posY, int speed)
         {
             Position = new Vector(posX, posY);
-            this.speed = speed;
+            this.Speed = speed;
             IsAlive = true;
             lookDirection = LookDirection.Right;
         }
@@ -43,20 +43,20 @@ namespace Sample_Text
         public virtual void Move()
         {
             var direction = NormalizeMovement();
-            var newPos = Position + (direction * speed);
+            var newPos = Position + (direction * Speed);
             if (newPos.X < 0 || newPos.X > 1440) 
             {
-                Position += new Vector(Position.X - newPos.X, direction.Y * speed);
+                Position += new Vector(Position.X - newPos.X, direction.Y * Speed);
                 return;
             }
             if (newPos.Y < 0 || newPos.Y > 1024)
             {
-                Position += new Vector(direction.X * speed, Position.Y - newPos.Y);
+                Position += new Vector(direction.X * Speed, Position.Y - newPos.Y);
                 return;
             }
             if (newPos.X < 0 || newPos.Y < 0 || newPos.X > 1440 || newPos.Y > 1024)
                 return;
-            Position += direction*speed;
+            Position += direction*Speed;
         }
         public virtual Vector NormalizeMovement()
         {
@@ -73,10 +73,10 @@ namespace Sample_Text
         {
             return new Rectangle((int)Position.X - Hitbox / 2, (int)Position.Y - Hitbox / 2, Hitbox,Hitbox);
         }
-        public Rectangle GetHitBoxRectangle(int posX, int posY)
-        {
-            return new Rectangle(posX - Hitbox / 2, posY - Hitbox / 2, Hitbox, Hitbox);
-        }
+        //public Rectangle GetHitBoxRectangle(int posX, int posY)
+        //{
+        //    return new Rectangle(posX - Hitbox / 2, posY - Hitbox / 2, Hitbox, Hitbox);
+        //}
 
     }
 }

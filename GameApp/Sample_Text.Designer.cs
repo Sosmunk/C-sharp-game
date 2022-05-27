@@ -38,6 +38,7 @@ namespace Sample_Text
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.BackgroundImage = global::Sample_Text.Properties.Resources.grassTile6;
             this.ClientSize = new System.Drawing.Size(1440, 1024);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -46,7 +47,6 @@ namespace Sample_Text
             this.Name = "Sample_Text";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hmm";
-            
             this.ResumeLayout(false);
 
         }

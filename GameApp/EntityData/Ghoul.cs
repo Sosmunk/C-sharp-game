@@ -12,6 +12,7 @@ namespace Sample_Text.EntityData
         {
             Hitbox = 100;
             Health = 50;
+            Damage = 30;
         }
     }
 }

@@ -11,74 +11,61 @@ namespace Sample_Text.EntityData
 {
     public abstract class Enemy : Entity
     {
+        public int Damage { get; set; }
         protected Enemy(int posX, int posY, int speed) : base(posX, posY, speed)
         {
+            Damage = 0;
             Health = 50;
             Hitbox = 50;
         }
         public void Move(HashSet<Enemy> enemies)
         {
             var direction = NormalizeMovement();
-            var newPos = Position + (direction * speed);
+            var newPos = Position + (direction * Speed);
             if (newPos.X < 0 || newPos.X > 1440)
             {
-                Position += new Vector(Position.X - newPos.X, direction.Y * speed);
+                Position += new Vector(Position.X - newPos.X, direction.Y * Speed);
                 return;
             }
             if (newPos.Y < 0 || newPos.Y > 1024)
             {
-                Position += new Vector(direction.X * speed, Position.Y - newPos.Y);
+                Position += new Vector(direction.X * Speed, Position.Y - newPos.Y);
                 return;
             }
             if (newPos.X < 0 || newPos.Y < 0 || newPos.X > 1440 || newPos.Y > 1024)
                 return;
-            //var hBoxRectangle = GetHitBoxRectangle((int)newPos.X,(int)newPos.Y);
-            //foreach (var enemy in enemies)
-            //{
-            //    if (enemy != this)
-            //    {
-            //        if (AreIntersected(hBoxRectangle, enemy.GetHitBoxRectangle()))
-            //        {
-            //            if (enemy.Position.X > newPos.X)
-            //            {
-            //                
-            //            }
-            //            return;
-            //        }
-            //    }
-            //}
 
             Position = newPos;
         }
         public void SetMoveDirectionToPlayerLocation(PlayerEntity player)
         {
-            if (this.Position.X - speed > player.PreviousPosition.X)
+            if (this.Position.X - Speed > player.PreviousPosition.X)
             {
                 movingLeft = true;
                 movingRight = false;
                 lookDirection = LookDirection.Left;
             }
-            else if (this.Position.X + speed < player.PreviousPosition.X)
+            else if (this.Position.X + Speed < player.PreviousPosition.X)
             {
                 movingRight = true;
                 movingLeft = false;
                 lookDirection=LookDirection.Right;
             }
-            if (this.Position.Y - speed >= player.PreviousPosition.Y)
+            if (this.Position.Y - Speed >= player.PreviousPosition.Y)
             {
                 movingUp = true;
                 movingDown = false;
             }
-            else if (this.Position.Y + speed <= player.PreviousPosition.Y)
+            else if (this.Position.Y + Speed <= player.PreviousPosition.Y)
             {
                 movingDown = true;
                 movingUp = false;
             }
-            if (Math.Abs(player.PreviousPosition.X - Position.X) < speed)
+            if (Math.Abs(player.PreviousPosition.X - Position.X) < Speed)
             {
                 Position = new System.Windows.Vector(player.PreviousPosition.X, Position.Y);
             }
-            if (Math.Abs(player.PreviousPosition.Y - Position.Y) < speed)
+            if (Math.Abs(player.PreviousPosition.Y - Position.Y) < Speed)
             {
                 Position = new System.Windows.Vector(Position.X, player.PreviousPosition.Y);
             }

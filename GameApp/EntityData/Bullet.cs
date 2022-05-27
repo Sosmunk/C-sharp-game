@@ -20,14 +20,14 @@ namespace Sample_Text
         public override void Move()
         {
             var direction = NormalizeMovement();
-            var newPos = Position + direction * speed;
+            var newPos = Position + direction * Speed;
             if (newPos.X < 0 || newPos.Y < 0 || newPos.X > 1440 || newPos.Y > 1024 || Health <= 0 )
             {
                 IsAlive = false;
                 return;
             }
             Health -= 1;   
-            Position += direction * speed;
+            Position += direction * Speed;
         }
 
 

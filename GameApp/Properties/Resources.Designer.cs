@@ -113,26 +113,6 @@ namespace Sample_Text.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _7 {
-            get {
-                object obj = ResourceManager.GetObject("_7", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Background {
-            get {
-                object obj = ResourceManager.GetObject("Background", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap g1 {
             get {
                 object obj = ResourceManager.GetObject("g1", resourceCulture);
@@ -173,19 +153,9 @@ namespace Sample_Text.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAGE1 {
+        internal static System.Drawing.Bitmap grassTile6 {
             get {
-                object obj = ResourceManager.GetObject("MAGE1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap scaledMage {
-            get {
-                object obj = ResourceManager.GetObject("scaledMage", resourceCulture);
+                object obj = ResourceManager.GetObject("grassTile6", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

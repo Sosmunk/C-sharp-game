@@ -54,14 +54,14 @@ namespace Sample_Text.ModelManagers
 
             }
         }
-        public void PlayerWithEnemyCollisions(Enemy enemy, PlayerEntity player)
+        public void PlayerWithEnemyCollision(Enemy enemy, PlayerEntity player)
         {
             if (player.InvulnerabilityFrames > 0) return;
             var playerRectangle = player.GetHitBoxRectangle();
             var enemyRectangle = enemy.GetHitBoxRectangle();
             if (AreIntersected(playerRectangle, enemyRectangle))
             {
-                player.TakeDamage(1);
+                player.TakeDamage(enemy.Damage);
             }
         }
     }
