@@ -89,6 +89,7 @@ namespace Sample_Text
                 LabelManager.ChangeKillCount(GameStatistics.KillCount);
                 Enemies.RemoveWhere(x => !x.IsAlive);
                 Bullets.RemoveWhere(x => !x.IsAlive);
+                if (rngTick == 1 && Player.Health < 228) Player.Health += 5;
             }
             else
             {
